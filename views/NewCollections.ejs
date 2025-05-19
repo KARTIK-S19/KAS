@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Collections - KAS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    };
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-200 font-sans flex flex-col min-h-screen">
+
+  <%- include('./partials/header') %>
+
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="text-center py-16 px-6 md:px-12">
+      <h1 class="text-4xl font-bold mb-4">Explore Our Latest Collections</h1>
+      <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
+        Thoughtfully curated styles, perfectly designed for every mood and season.
+      </p>
+    </section>
+
+    <!-- 3 Collection Cards -->
+    <section class="max-w-5xl mx-auto px-4 md:px-8 pb-24 space-y-12">
+      <% collections.forEach(function(collection) { %>
+        <div class="flex flex-col md:flex-row items-center bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition">
+          <div class="w-full md:w-1/2 h-64 md:h-72">
+            <img name="image" src="data:image/jpeg;base64,<%= collection.image.toString('base64') %>" alt="<%= collection.title %>" class="w-full h-full object-cover" />
+          </div>
+          <div class="w-full md:w-1/2 p-8 flex flex-col justify-center gap-3">
+            <h2 class="text-2xl font-semibold"><%= collection.title %></h2>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+              <%= collection.description %>
+            </p>
+            <a href="/collection/<%= collection.slug %>" class="mt-4 inline-block w-fit px-5 py-2.5 rounded-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-sm font-medium hover:opacity-90 transition">
+              Shop Now
+            </a>
+          </div>
+        </div>
+      <% }) %>
+    </section>
+  </main>
+
+
+  <!-- Dark/Light Toggle Script -->
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+    if (
+      localStorage.getItem('theme') === 'dark' ||
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      htmlEl.classList.add('dark');
+      toggleBtn?.textContent = '☀️';
+    }
+    toggleBtn?.addEventListener('click', () => {
+      htmlEl.classList.toggle('dark');
+      const isDark = htmlEl.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      toggleBtn.textContent = isDark ? '☀️' : '🌙';
+    });
+  </script>
+
+</body>
+</html>

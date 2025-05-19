@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {},
+          },
+        }
+      </script>
+</head>
+<body>
+    <%- include('./partials/header') %>
+
+    <% if(success.length>0){ %>
+        <div class="absolute top-12  left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-blue-500">
+            <span class="inline-block mt-1 mb-1 text-white">
+                <%= success %>
+            </span>
+        </div>
+        <% } %>
+
+
+    <div class="w-full flex items-start px-20 py-20 flex-grow">
+        <div class="w-[25%] flex flex-col items-start">
+            <div class="flex items-center gap-2">
+                <h3>sort by</h3>
+                <form action="/shop">
+                    <select class="border-[1px] px-2 py-1" name="sortby" id="">
+                        <option value="popular">Popular</option>
+                        <option value="newest">Newest</option>
+                    </select>
+                </form>
+            </div>
+            <div class="flex flex-col mt-20">
+                <a class="block w-fit mb-2" href="/collection">New Collection</a>
+                <a class="block w-fit mb-2" href="">All Products</a>
+                <a class="block w-fit mb-2" href="">Discounted Products</a>
+            </div>
+            <div class="mt-32">
+                <a class="block w-fit mb-2" href="">Filter by :</a>
+                <a class="block w-fit mb-2" href="">Availability</a>
+                <a class="block w-fit mb-2" href="">Discount</a>
+            </div>
+        </div>
+        <div class="w-[75%] flex flex-col gap-5">
+            <div class="flex items-start  gap-5 flex-wrap">
+                <% products.forEach(function(product){ %>
+                    <div class="w-50 rounded-md overflow-hidden">
+                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                            <img class="h-[90%] w-[90%] object-cover " src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+                                alt="">
+                        </div>
+                        <div
+                            class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+                            <div>
+                                <h3>
+                                    <%= product.name %>
+                                </h3>
+                                <h4>₹ <%= product.price %>
+                                </h4>
+                            </div>
+                            <a href="/addtocart/<%= product._id %>" class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
+                                <i class="ri-add-line text-zinc-900"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+    </div>
+    <%- include('./partials/footer') %>
+</body>
+</html>
